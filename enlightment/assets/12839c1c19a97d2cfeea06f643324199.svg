@@ -1,0 +1,16 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120" width="240" height="120">
+	<title>Pitron2</title>
+	<style>
+		tspan { white-space:pre } 
+		.t0 { font-size: 75px;fill: #808080;font-weight: 400;font-family: "Orbitron-Regular", "Orbitron" } 
+		.t1 { font-size: 24px;fill: #808080;font-weight: 400;font-family: "ArialMT", "Arial" } 
+	</style>
+	<text id="Pitron" style="transform: matrix(1,0,0,1,-3.513,73.784)" >
+		<tspan x="0" y="0" class="t0">P</tspan><tspan  y="0" class="t0">i</tspan><tspan  y="0" class="t0">t</tspan><tspan  y="0" class="t0">r</tspan><tspan  y="0" class="t0">o</tspan><tspan  y="0" class="t0">n
+</tspan>
+	</text>
+	<text id="in creating the future" style="transform: matrix(1,0,0,1,10,93.838)" >
+		<tspan x="0" y="0" class="t1">i</tspan><tspan  y="0" class="t1">n</tspan><tspan  y="0" class="t1"> </tspan><tspan  y="0" class="t1">c</tspan><tspan  y="0" class="t1">r</tspan><tspan  y="0" class="t1">e</tspan><tspan  y="0" class="t1">a</tspan><tspan  y="0" class="t1">t</tspan><tspan  y="0" class="t1">i</tspan><tspan  y="0" class="t1">n</tspan><tspan  y="0" class="t1">g</tspan><tspan  y="0" class="t1"> </tspan><tspan  y="0" class="t1">t</tspan><tspan  y="0" class="t1">h</tspan><tspan  y="0" class="t1">e</tspan><tspan  y="0" class="t1"> </tspan><tspan  y="0" class="t1">f</tspan><tspan  y="0" class="t1">u</tspan><tspan  y="0" class="t1">t</tspan><tspan  y="0" class="t1">u</tspan><tspan  y="0" class="t1">r</tspan><tspan  y="0" class="t1">e</tspan><tspan  y="0" class="t1">
+</tspan>
+	</text>
+</svg>
