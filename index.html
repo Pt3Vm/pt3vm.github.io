@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strona Główna</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-size: 300% 300%;
+            animation: gradientBG 6s infinite alternate ease-in-out;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+        .container {
+            width: 75vw;
+            height: 75vh;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .title {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            transition: color 0.3s;
+        }
+        @media (prefers-color-scheme: dark) {
+            .title {
+                color: white;
+            }
+        }
+        .search-bar {
+    width: 100%;
+    max-width: 90%;
+    padding: 12px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    outline: none;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+}
+
+.search-bar:focus {
+    max-width: 100%;
+}
+
+form {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+        .icons {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(5px);
+            border-radius: 50%;
+            text-decoration: none;
+            font-size: 1.5rem;
+            color: black;
+            transition: transform 0.2s ease;
+        }
+        .icon:active {
+            transform: scale(0.85);
+        }
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: linear-gradient(135deg, #232526, #414345);
+            }
+        }
+        @media (prefers-color-scheme: light) {
+            body {
+                background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            }
+        }
+    </style>
+    <script>
+        function setRandomGradient() {
+            const colors = [
+                ['#ff9a9e', '#fad0c4'],
+                ['#a18cd1', '#fbc2eb'],
+                ['#fad0c4', '#ffdde1'],
+                ['#ffecd2', '#fcb69f'],
+                ['#89f7fe', '#66a6ff'],
+                ['#ff758c', '#ff7eb3']
+            ];
+            const darkColors = [
+                ['#232526', '#414345'],
+                ['#141e30', '#243b55'],
+                ['#0f2027', '#203a43'],
+                ['#485563', '#29323c'],
+                ['#1e3c72', '#2a5298'],
+                ['#16222a', '#3a6073']
+            ];
+            const selectedColors = window.matchMedia('(prefers-color-scheme: dark)').matches ? darkColors : colors;
+            const gradient = selectedColors[Math.floor(Math.random() * selectedColors.length)];
+            document.body.style.background = `linear-gradient(135deg, ${gradient[0]}, ${gradient[1]})`;
+        }
+        window.onload = setRandomGradient;
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="title">Explore and Discover</div>
+        <form action="https://www.google.com/search" method="GET">
+            <input type="text" name="q" class="search-bar" placeholder="Szukaj w Google...">
+        </form>
+        <div class="icons">
+            <a href="#" class="icon">🏠</a>
+            <a href="#" class="icon">🔍</a>
+            <a href="#" class="icon">📧</a>
+            <a href="#" class="icon">⚙️</a>
+        </div>
+    </div>
+</body>
+</html>
