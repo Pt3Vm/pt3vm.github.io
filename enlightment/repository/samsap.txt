@@ -1,0 +1,1 @@
+PITRONPKG|SampleAppPackage|1|2|https://pt3vm.github.io/enlightment/repository/Duszek13.sprite3|https://pt3vm.github.io/enlightment/repository/SAM.sprite3
