@@ -1,0 +1,1 @@
+PITRONPKG|SampleAppPackageV2|2|2|https://pt3vm.github.io/enlightment/repository/samicon.sprite3|https://pt3vm.github.io/enlightment/repository/SAM.sprite3
