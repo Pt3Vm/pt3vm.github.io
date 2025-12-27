@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cheat.Watch</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1976d2">
+    <meta http-equiv="Content-Security-Policy" content="worker-src 'self' blob:; script-src 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;">
+    <style>
+        :root {
+            --primary: #1976d2; /* Niebieski Material Design */
+            --primary-light: #63a4ff;
+            --primary-dark: #004ba0;
+            --bg: #ffffff;
+            --surface: #f0f2f5;
+            --text-main: #212121;
+            --text-secondary: #5f6368;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            background-color: var(--surface);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Top App Bar */
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 16px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        header img {
+            height: 32px;
+            width: 32px;
+            object-fit: contain;
+        }
+
+        main {
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 80px;
+        }
+
+        .page { display: none; padding: 16px; animation: fadeIn 0.2s ease-in; }
+        .page.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Dashboard */
+        .scroll-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 12px;
+            padding: 4px 4px 12px 4px;
+            scrollbar-width: none;
+        }
+        .scroll-container::-webkit-scrollbar { display: none; }
+
+        .feature-box {
+            min-width: 140px;
+            background: white;
+            padding: 20px 16px;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .feature-box:active { transform: scale(0.95); }
+        .feature-box i { color: var(--primary); font-size: 30px; }
+        .feature-box h4 { margin: 12px 0 6px 0; font-size: 15px; }
+        .feature-box p { font-size: 11px; color: var(--text-secondary); margin: 0; line-height: 1.4; }
+
+        /* News & History Items */
+        .card-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: white;
+            margin-bottom: 12px;
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .history-info {
+            display: flex;
+            flex-direction: column;
+            gap: 6px; /* Zwiększony odstęp między tytułem a datą */
+        }
+
+        .date-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Forms */
+        .input-group { margin-bottom: 20px; }
+        label { font-size: 13px; font-weight: 500; color: var(--primary); }
+        input, textarea {
+            width: 100%; box-sizing: border-box;
+            border: 1px solid #ddd; border-radius: 8px;
+            padding: 14px; font-size: 16px; margin-top: 6px;
+            background: #fafafa;
+        }
+        input:focus, textarea:focus { outline: none; border-color: var(--primary); background: white; }
+        textarea { min-height: 180px; }
+
+        .btn-fab {
+            background: var(--primary); color: white; border: none;
+            padding: 16px; border-radius: 12px;
+            font-weight: 500; width: 100%; font-size: 15px;
+            box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3);
+            cursor: pointer;
+        }
+
+        /* Library */
+        .lib-item {
+            background: white; padding: 16px; border-radius: 12px;
+            margin-bottom: 12px; display: flex; justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Bottom Navigation */
+        nav {
+            position: fixed; bottom: 0; width: 100%;
+            background: white; border-top: 1px solid #eee;
+            display: flex; justify-content: space-around;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        .nav-item {
+            padding: 10px 0; text-align: center; flex: 1;
+            color: #999; cursor: pointer; font-size: 11px;
+        }
+        .nav-item.active { color: var(--primary); }
+        .nav-item i { display: block; font-size: 24px; margin-bottom: 2px; }
+
+        /* History Spacing */
+        #hist-list { margin-bottom: 30px; } /* Odstęp między listą a przyciskiem */
+
+        /* Editor Overlay */
+        #editorOverlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: white; z-index: 100; display: none; padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="logo.png" alt="L" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1157/1157000.png'">
+        <span id="app-title" style="font-size: 20px; font-weight: 500;">Cheat.Watch (PWA)</span>
+    </header>
+
+    <main id="content">
+        <section id="home" class="page active">
+            <h3 style="margin-bottom:16px; font-weight: 400;">Your Cheats</h3>
+            <div class="scroll-container">
+                <div class="feature-box" onclick="showPage('quick')">
+                    <i class="material-icons">bolt</i>
+                    <h4>Quick Cheat</h4>
+                    <p>Enter cheat and send it.</p>
+                </div>
+                <div class="feature-box" onclick="showPage('library')">
+                    <i class="material-icons">folder</i>
+                    <h4>Library</h4>
+                    <p>Menage your Cheats.</p>
+                </div>
+                <div class="feature-box" onclick="showPage('history')">
+                    <i class="material-icons">history</i>
+                    <h4>History</h4>
+                    <p>Show Cheats History.</p>
+                </div>
+                <div class="feature-box" onclick="showPage('settings')">
+                    <i class="material-icons">settings</i>
+                    <h4>Settings</h4>
+                    <p>Options and permissions.</p>
+                </div>
+            </div>
+
+            <h3 style="margin-top:24px; font-weight: 400;">Komunikaty</h3>
+            <div class="card-item">
+                <i class="material-icons" style="color:var(--primary)">info</i>
+                <div>
+                    <strong>New Update</strong>
+                    <div style="font-size:12px; color:var(--text-secondary)">Something Something...</div>
+                </div>
+            </div>
+            <div class="card-item">
+                <i class="material-icons" style="color:var(--primary)">article</i>
+                <div>
+                    <strong>Old</strong>
+                    <div style="font-size:12px; color:var(--text-secondary)">Something Something...</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="quick" class="page">
+            <div class="input-group">
+                <label>Title</label>
+                <input type="text" id="q-title" placeholder="Your Cheat Name...">
+            </div>
+            <div class="input-group">
+                <label>Cheat content</label>
+                <textarea id="q-body" placeholder="Contents of your cheat..."></textarea>
+            </div>
+            <button class="btn-fab" onclick="sendQuick()">Send Cheat...</button>
+        </section>
+
+        <section id="library" class="page">
+            <div id="lib-list"></div>
+            <button class="btn-fab" style="margin-top:20px" onclick="openEditor()">+ New Cheat...</button>
+        </section>
+
+        <section id="history" class="page">
+            <div id="hist-list"></div>
+            <button class="btn-fab" style="background: #e0e0e0; color: #444; box-shadow: none;" onclick="clearHistory()">Clear all history...</button>
+        </section>
+
+        <section id="settings" class="page">
+            <h3>Settings</h3>
+            <div class="card-item" style="flex-direction:column; align-items:flex-start;">
+                <p>Notification permission is required for the app to function properly.</p>
+                <button class="btn-fab" onclick="requestPermission()">Premission Request</button>
+            </div>
+        </section>
+    </main>
+
+    <div id="editorOverlay">
+        <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2 id="edit-mode-title" style="margin:0">Editor</h2>
+            <i class="material-icons" onclick="closeEditor()" style="cursor:pointer; color: #666;">close</i>
+        </div>
+        <input type="hidden" id="edit-id">
+        <label>Title</label>
+        <input type="text" id="e-title" style="margin-bottom:15px">
+        <label>Cheat Content...</label>
+        <textarea id="e-body"></textarea>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:20px">
+            <button onclick="saveLibrary()" class="btn-fab" style="background:#4caf50; box-shadow:none">Save</button>
+            <button onclick="sendFromEditor()" class="btn-fab">Send</button>
+        </div>
+    </div>
+
+    <nav id="bottom-nav">
+        <div class="nav-item active" data-id="home" onclick="showPage('home')"><i class="material-icons">home</i>Start</div>
+        <div class="nav-item" data-id="quick" onclick="showPage('quick')"><i class="material-icons">bolt</i>Szybkie</div>
+        <div class="nav-item" data-id="library" onclick="showPage('library')"><i class="material-icons">folder</i>Zbiory</div>
+        <div class="nav-item" data-id="history" onclick="showPage('history')"><i class="material-icons">history</i>Historia</div>
+    </nav>
+
+    <script>
+        let library = JSON.parse(localStorage.getItem('lib')) || [];
+        let historyData = JSON.parse(localStorage.getItem('hist')) || [];
+
+        function showPage(pageId) {
+            // Ukryj wszystkie strony
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            // Pokaż wybraną
+            const targetPage = document.getElementById(pageId);
+            if(targetPage) targetPage.classList.add('active');
+            
+            // Synchronizacja paska dolnego
+            document.querySelectorAll('.nav-item').forEach(n => {
+                n.classList.remove('active');
+                if(n.getAttribute('data-id') === pageId) {
+                    n.classList.add('active');
+                }
+            });
+
+            if(pageId === 'library') renderLibrary();
+            if(pageId === 'history') renderHistory();
+        }
+
+        function requestPermission() {
+            Notification.requestPermission().then(permission => {
+                alert("Status uprawnień: " + permission);
+            });
+        }
+
+        function sendNotifyOld(t, b) {
+            if (Notification.permission === "granted") {
+                new Notification(t, { body: b });
+                historyData.push({t, b, date: new Date().toLocaleString()});
+                localStorage.setItem('hist', JSON.stringify(historyData));
+            } else {
+                alert("Brak uprawnień do powiadomień. Wejdź w Ustawienia.");
+            }
+        }
+        
+        function sendNotify(t, b) {
+            if (Notification.permission !== "granted") {
+                Notification.requestPermission().then(permission => {
+                    if (permission !== "granted") {
+                        alert("Brak uprawnień do powiadomień!");
+                    }
+                });
+                return;
+            }
+
+            const options = {
+                body: b,
+                icon: 'https://hostron.neocities.org/cheatapp/icon.png',
+                badge: 'https://hostron.neocities.org/cheatapp/icon.png',
+                vibrate: [100, 50, 100],
+                tag: 'cheat-watch-msg',
+                renotify: true
+            };
+
+            // Sprawdzamy, czy Service Worker jest zarejestrowany i gotowy
+            if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+                navigator.serviceWorker.ready.then(function(reg) {
+                    reg.showNotification(t, options);
+                }).catch(function(err) {
+                    console.warn("Błąd SW, używam zwykłego powiadomienia", err);
+                    new Notification(t, options);
+                });
+            } else {
+                // Metoda klasyczna (Windows, iOS, Safari)
+                try {
+                    new Notification(t, options);
+                } catch (e) {
+                    console.error("Obie metody wysyłki zawiodły", e);
+                }
+            }
+
+            // Historia zapisuje się niezależnie od tego, czy powiadomienie "wyskoczyło"
+            historyData.push({t, b, date: new Date().toLocaleString()});
+            localStorage.setItem('hist', JSON.stringify(historyData));
+        }
+
+        function sendQuick() {
+            const t = document.getElementById('q-title').value;
+            const b = document.getElementById('q-body').value;
+            if(!t || !b) return alert("Wypełnij pola!");
+            sendNotify(t, b);
+        }
+
+        // --- Biblioteka ---
+        function renderLibrary() {
+            const list = document.getElementById('lib-list');
+            list.innerHTML = library.length ? '' : '<p style="text-align:center; color:#999">Twoja biblioteka jest pusta.</p>';
+            library.forEach((item, index) => {
+                list.innerHTML += `
+                    <div class="lib-item">
+                        <div onclick="openEditor(${index})" style="flex:1; cursor:pointer">
+                            <strong style="color:var(--primary)">${item.t}</strong><br>
+                            <small style="color:var(--text-secondary)">${item.b.substring(0,40)}...</small>
+                        </div>
+                        <i class="material-icons" style="color:#ff5252; cursor:pointer; padding:10px" onclick="deleteLib(${index})">delete_outline</i>
+                    </div>`;
+            });
+        }
+
+        function deleteLib(index) {
+            if(confirm("Czy na pewno chcesz usunąć element z biblioteki?")) {
+                library.splice(index, 1);
+                localStorage.setItem('lib', JSON.stringify(library));
+                renderLibrary();
+            }
+        }
+
+        function openEditor(index = null) {
+            document.getElementById('editorOverlay').style.display = 'block';
+            if(index !== null) {
+                document.getElementById('edit-id').value = index;
+                document.getElementById('e-title').value = library[index].t;
+                document.getElementById('e-body').value = library[index].b;
+            } else {
+                document.getElementById('edit-id').value = "";
+                document.getElementById('e-title').value = "";
+                document.getElementById('e-body').value = "";
+            }
+        }
+
+        function closeEditor() { document.getElementById('editorOverlay').style.display = 'none'; }
+
+        function saveLibrary() {
+            const id = document.getElementById('edit-id').value;
+            const t = document.getElementById('e-title').value;
+            const b = document.getElementById('e-body').value;
+            if(!t) return alert("Tytuł jest wymagany");
+            
+            if(id === "") library.push({t, b});
+            else library[id] = {t, b};
+            
+            localStorage.setItem('lib', JSON.stringify(library));
+            closeEditor();
+            renderLibrary();
+        }
+
+        function sendFromEditor() {
+            sendNotify(document.getElementById('e-title').value, document.getElementById('e-body').value);
+            closeEditor();
+        }
+
+        // --- Historia ---
+        function renderHistory() {
+            const list = document.getElementById('hist-list');
+            list.innerHTML = historyData.length ? '' : '<p style="text-align:center; color:#999">Brak historii wysyłania.</p>';
+            historyData.slice().reverse().forEach(item => {
+                list.innerHTML += `
+                <div class="card-item">
+                    <i class="material-icons" style="color:var(--text-secondary)">history</i>
+                    <div class="history-info">
+                        <strong style="font-size:15px">${item.t}</strong>
+                        <div class="date-label">
+                            <i class="material-icons" style="font-size:12px">schedule</i>
+                            ${item.date}
+                        </div>
+                    </div>
+                </div>`;
+            });
+        }
+
+        function clearHistory() { 
+            if(confirm("Wyczyścić całą historię?")) {
+                historyData = []; 
+                localStorage.setItem('hist', '[]'); 
+                renderHistory(); 
+            }
+        }
+        if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+            .then(reg => console.log('Service Worker zarejestrowany!'))
+            .catch(err => console.log('Błąd rejestracji SW:', err));
+    });
+}
+    </script>
+</body>
+</html>
