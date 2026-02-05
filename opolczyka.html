@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rondo Opolczyka | Centrum Energii</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f172a;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .energy-gradient {
+            background: linear-gradient(45deg, #00d2ff 0%, #3a7bd5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .circle-pulse {
+            animation: pulse 4s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute w-[600px] h-[600px] bg-blue-500/20 rounded-full blur-[120px] circle-pulse"></div>
+        
+        <div class="relative z-10 text-center px-4" data-aos="zoom-in" data-aos-duration="1500">
+            <h1 class="text-6xl md:text-8xl font-900 mb-6 leading-tight">
+                RONDO <br> <span class="energy-gradient uppercase">Władysława Opolczyka</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto font-light">
+                Miejsce, gdzie ruch spotyka się z harmonią, a każda prosta prowadzi do pozytywnego obrotu spraw.
+            </p>
+            <div class="mt-10">
+                <a href="#ekosystem" class="px-8 py-4 bg-blue-600 hover:bg-blue-500 transition-all rounded-full font-bold uppercase tracking-widest text-sm">
+                    Poczuj Wibracje
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="ekosystem" class="py-24 px-6">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            <div class="glass p-10 rounded-3xl" data-aos="fade-up" data-aos-delay="100">
+                <div class="text-4xl mb-4">🌀</div>
+                <h3 class="text-2xl font-bold mb-2">Płynny Ruch</h3>
+                <p class="text-gray-400">Architektura zaprojektowana tak, by negatywna energia nigdy nie stała w korku.</p>
+            </div>
+
+            <div class="glass p-10 rounded-3xl border-t-2 border-blue-400" data-aos="fade-up" data-aos-delay="300">
+                <div class="text-4xl mb-4">☀️</div>
+                <h3 class="text-2xl font-bold mb-2">Centrum Światła</h3>
+                <p class="text-gray-400">Opolczyk czuwa nad tym, by każdy zjazd był początkiem nowej przygody.</p>
+            </div>
+
+            <div class="glass p-10 rounded-3xl" data-aos="fade-up" data-aos-delay="500">
+                <div class="text-4xl mb-4">✨</div>
+                <h3 class="text-2xl font-bold mb-2">Dobra Aura</h3>
+                <p class="text-gray-400">360 stopni czystej, miejskiej energii, która napędza Twój dzień.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="py-20 relative bg-white/5">
+        <div class="max-w-4xl mx-auto text-center px-6">
+            <h2 class="text-4xl font-bold mb-10" data-aos="fade-right">Dlaczego Władysław?</h2>
+            <blockquote class="text-2xl italic font-light text-blue-200" data-aos="fade-left">
+                "Nie sztuką jest jechać prosto. Sztuką jest odnaleźć spokój w samym środku miejskiego wiru."
+            </blockquote>
+        </div>
+    </section>
+
+    <footer class="py-10 text-center text-gray-500 text-sm border-t border-white/10">
+        <p>&copy; 2026 Rondo Opolczyka. All positive vibes reserved.</p>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            once: true,
+            mirror: false
+        });
+    </script>
+</body>
+</html>
