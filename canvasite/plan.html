@@ -1,0 +1,160 @@
+<html lang="pl">
+<head>
+    <base target="_blank">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nowy Plan Lekcji</title>
+    <style>
+        .tabela {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 0 auto;
+            font-family: Arial, sans-serif;
+            color: #333;
+            font-size: 0.9em;
+        }
+
+        .tabela th {
+            background-color: #3498db;
+            color: white;
+            padding: 7px 4px;
+            border: 1px solid #2980b9;
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.8em;
+        }
+
+        .tabela td {
+            padding: 3px 2px;
+            border: 1px solid #ddd;
+            vertical-align: top;
+            line-height: 1.1;
+            transition: background-color 0.1s; /* Płynne podświetlanie */
+        }
+
+        .tabela .nr, .tabela .g {
+            background-color: #ecf0f1;
+            text-align: center;
+            font-weight: 500;
+            width: 3%;
+            font-size: 0.8em;
+        }
+
+        .tabela .g {
+            width: 8%;
+        }
+
+        .tabela .l {
+            background-color: #ffffff;
+            font-size: 0.85em;
+        }
+
+        .tabela tbody tr:nth-child(even) .l {
+            background-color: #f9f9f9;
+        }
+
+        /* POPRAWKA: Podświetlanie całego wiersza, w tym ciemniejszych komórek */
+        .tabela tbody tr:hover td {
+            background-color: #eaf6ff !important;
+        }
+
+        .tabela .p {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .tabela .n {
+            color: #7f8c8d;
+            margin-left: 3px;
+            text-decoration: none;
+        }
+
+        .tabela .s {
+            color: #e74c3c;
+            text-decoration: none;
+            font-weight: bold;
+            margin-left: 3px;
+        }
+
+        .tabela td > span[style*="font-size:85%"] {
+            display: block;
+            margin-bottom: 0;
+            padding: 2px 0 2px 4px;
+            line-height: 1.1;
+        }
+        
+        #status-info {
+            text-align: center;
+            font-family: Arial;
+            font-size: 0.8em;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<table class="tabela">
+    <thead>
+        <tr>
+            <th>Nr</th>
+            <th>Godz</th>
+            <th>Poniedziałek</th>
+            <th>Wtorek</th>
+            <th>Środa</th>
+            <th>Czwartek</th>
+            <th>Piątek</th>
+        </tr>
+    </thead>
+    <tbody id="plan-body">
+        </tbody>
+</table>
+
+<script>
+    // --- TUTAJ WPISZ SWOJE IP Z ORACLE ---
+    const MOJE_IP = "https://mc.pioters.ovh:8000"; 
+
+    async function pobierzPlan() {
+        const tbody = document.getElementById('plan-body');
+        const status = document.getElementById('status-info');
+
+        try {
+            const response = await fetch(`${MOJE_IP}/pobierz-plan`);
+            const dane = await response.json();
+
+            if (dane.error) {
+                status.innerText = "Błąd serwera: " + dane.error;
+                return;
+            }
+
+            tbody.innerHTML = ""; // Czyścimy stare dane
+
+            dane.forEach(row => {
+                const tr = document.createElement('tr');
+                
+                // Tworzymy wiersz używając Twoich klas CSS: .nr, .g, .l
+                tr.innerHTML = `
+                    <td class="nr">${row.nr}</td>
+                    <td class="g">${row.godziny}</td>
+                    <td class="l">${row.dni.pon}</td>
+                    <td class="l">${row.dni.wt}</td>
+                    <td class="l">${row.dni.sr}</td>
+                    <td class="l">${row.dni.czw}</td>
+                    <td class="l">${row.dni.pt}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            status.innerText = "Plan zaktualizowany pomyślnie.";
+
+        } catch (err) {
+            status.innerHTML = "<b style='color:red'>Błąd połączenia z API!</b> Sprawdź czy serwer działa i port 8000 jest otwarty.";
+            console.error(err);
+        }
+    }
+
+    // Odpal funkcję po załadowaniu strony
+    window.onload = pobierzPlan;
+</script>
+
+</body>
+</html>
