@@ -1,0 +1,321 @@
+.ribbon {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	background: #f5f6f7;
+	border-bottom: 1px solid #919191;
+	font-family: "Segoe UI", Tahoma, sans-serif;
+	font-size: 12px;
+	user-select: none;
+	z-index: 100;
+}
+
+.ribbon-top-bar {
+	display: flex;
+	background: #fff;
+	align-items: stretch;
+	height: 32px;
+	padding-top: 5px;
+}
+
+.ribbon-file-button {
+	background: linear-gradient(to bottom, #2d89ef 0%, #1e71cd 100%);
+	color: #fff;
+	padding: 0 15px;
+	font-weight: bold;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	font-size: 13px;
+	margin-left: 5px;
+	border-radius: 2px 2px 0 0;
+	box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+}
+
+.ribbon-file-button:hover {
+	background: linear-gradient(to bottom, #4b9df1 0%, #217ada 100%);
+}
+
+.ribbon-tabs-header {
+	display: flex;
+	margin-left: 2px;
+	flex: 1;
+}
+
+.ribbon-tab-button {
+	padding: 0 20px;
+	cursor: pointer;
+	border: 1px solid transparent;
+	border-bottom: none;
+	display: flex;
+	align-items: center;
+	color: #000;
+	font-size: 12px;
+	border-radius: 3px 3px 0 0;
+	margin-right: 2px;
+}
+
+.ribbon-tab-button.active {
+	background: linear-gradient(to bottom, #f5f6f7 0%, #e7eaed 100%);
+	border: 1px solid #919191;
+	border-bottom-color: #f5f6f7;
+	position: relative;
+	z-index: 5;
+}
+
+.ribbon-content-area {
+	display: flex;
+	height: 100px;
+	padding: 3px 5px;
+	background: linear-gradient(to bottom, #f5f6f7 0%, #e7eaed 100%);
+	border-top: 1px solid #919191;
+	margin-top: -1px;
+	align-items: stretch;
+	overflow: visible; /* Changed from overflow-x: auto to allow dropdowns */
+}
+
+.ribbon-group {
+	display: flex;
+	flex-direction: column;
+	border-right: 1px solid #dcdcdc;
+	padding: 0 10px;
+	position: relative;
+	min-width: 50px;
+	flex-shrink: 0;
+	overflow: visible; /* Ensure groups don't clip dropdowns */
+}
+
+.ribbon-group-content {
+	display: flex;
+	flex: 1;
+	align-items: center;
+	padding-bottom: 20px;
+}
+
+.ribbon-group-label {
+	position: absolute;
+	bottom: 4px;
+	left: 0;
+	right: 0;
+	text-align: center;
+	color: #6d6e71;
+	font-size: 11px;
+}
+
+.ribbon-column {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 2px;
+}
+
+.ribbon-button {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 4px;
+	border: 1px solid transparent;
+	cursor: pointer;
+	min-width: 44px;
+}
+
+.ribbon-button:hover {
+	background: #e5f1fb;
+	border-color: #a4cdff;
+}
+
+.ribbon-button.large {
+	min-width: 56px;
+	height: 75px;
+}
+
+.ribbon-button.large .ribbon-button-label {
+	margin-top: 4px;
+	text-align: center;
+	line-height: 1.1;
+}
+
+.ribbon-button:not(.large) {
+	flex-direction: row;
+	justify-content: flex-start;
+	width: 100%;
+	padding: 2px 6px;
+	min-width: 80px;
+}
+
+.ribbon-button:not(.large) .ribbon-button-label {
+	margin-left: 6px;
+}
+
+.ribbon-button-icon {
+	image-rendering: pixelated;
+	background-image: url(../images/classic/tools.png);
+	background-repeat: no-repeat;
+}
+
+.ribbon-button.large .ribbon-button-icon {
+	width: 32px;
+	height: 32px;
+}
+
+.ribbon-button:not(.large) .ribbon-button-icon {
+	width: 16px;
+	height: 16px;
+}
+
+.ribbon-grid-3x2 {
+	display: grid;
+	grid-template-columns: repeat(3, 26px);
+	grid-template-rows: repeat(2, 26px);
+	gap: 2px;
+}
+
+.ribbon-grid-btn {
+	width: 26px;
+	height: 26px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid transparent;
+	cursor: pointer;
+}
+
+.ribbon-grid-btn:hover {
+	background: #e5f1fb;
+	border-color: #a4cdff;
+}
+
+.ribbon-grid-btn.active {
+	background: #cce4f7;
+	border-color: #a4cdff;
+}
+
+.tool-icon {
+	width: 16px;
+	height: 16px;
+	background-image: url(../images/classic/tools.png);
+	background-position: calc(var(--icon-index) * -16px) 0;
+}
+
+/* Colors Section */
+.ribbon-colors-container {
+	display: flex;
+	align-items: center;
+	padding: 0 5px;
+}
+
+.color-indicator-block {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-right: 12px;
+	min-width: 45px;
+}
+
+.ribbon-swatch-large {
+	width: 30px;
+	height: 30px;
+	border: 1px solid #919191;
+	box-shadow: inset 1px 1px 2px rgba(0,0,0,0.1);
+	margin-bottom: 2px;
+}
+
+.color-label {
+	font-size: 10px;
+	color: #333;
+	text-align: center;
+}
+
+.ribbon-palette {
+	display: grid;
+	grid-template-columns: repeat(10, 16px);
+	grid-template-rows: repeat(3, 16px);
+	gap: 2px;
+	padding: 2px;
+	background: #fff;
+	border: 1px solid #919191;
+}
+
+.ribbon-swatch {
+	width: 16px;
+	height: 16px;
+	border: 1px solid #919191;
+	cursor: pointer;
+}
+
+.ribbon-swatch:hover {
+	border-color: #000;
+	box-shadow: 0 0 2px rgba(0,0,0,0.5);
+}
+
+/* Icon specific transforms for large icons from tools.png */
+.icon-paste { background-position: -192px 0; transform: scale(2); }
+.icon-select { background-position: -144px 0; transform: scale(2); }
+.icon-rotate { background-position: -160px 0; transform: scale(1.5); }
+.icon-cut { background-position: -112px 0; }
+.icon-copy { background-position: -128px 0; }
+.ribbon-button.has-dropdown {
+	position: relative;
+}
+
+.ribbon-button-main {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+}
+
+.ribbon-button-arrow {
+	font-size: 8px;
+	padding-top: 2px;
+}
+
+.ribbon-dropdown-menu {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	background: #fff;
+	border: 1px solid #919191;
+	box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+	z-index: 1000;
+	min-width: 180px;
+	display: flex;
+	flex-direction: column;
+	padding: 2px 0;
+}
+
+.ribbon-dropdown-item {
+	padding: 5px 10px;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	color: #333;
+}
+
+.ribbon-dropdown-item:hover {
+	background: #e5f1fb;
+}
+
+.ribbon-dropdown-divider {
+	height: 1px;
+	background: #dcdcdc;
+	margin: 2px 0;
+}
+
+.ribbon-dropdown-check {
+	width: 20px;
+	display: inline-block;
+	font-weight: bold;
+	color: #1e71cd;
+}
+
+/* Hide old UI when ribbon is active */
+body.ribbon-ui .menu-bar { display: none !important; }
+body.ribbon-ui:not(.show-classic-ui) .component-area.left,
+body.ribbon-ui:not(.show-classic-ui) .onleft,
+body.ribbon-ui:not(.show-classic-ui) .component-area.bottom,
+body.ribbon-ui:not(.show-classic-ui) .onbottom { 
+	display: none !important; 
+}
+body.ribbon-ui .jspaint { flex-direction: column; }
