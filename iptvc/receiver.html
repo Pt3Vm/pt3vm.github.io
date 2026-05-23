@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>IPTV Box</title>
+
+<style>
+body {
+  margin:0;
+  background:black;
+  color:white;
+  font-family:sans-serif;
+  overflow:hidden;
+}
+
+#wrap {
+  display:flex;
+  height:100vh;
+}
+
+#list {
+  width:38%;
+  border-right:1px solid #333;
+  overflow:hidden;
+}
+
+.item {
+  padding:10px;
+  font-size:18px;
+}
+
+.active {
+  background:#222;
+}
+
+#video {
+  width:62%;
+  background:black;
+}
+</style>
+</head>
+
+<body>
+
+<div id="wrap">
+  <div id="list"></div>
+  <video id="video" autoplay></video>
+</div>
+
+<script>
+// ====== TWOJA LISTA M3U ======
+const rawM3U = `
+#EXTINF:-1,4Fun Kids
+https://stream.4fun.tv:8889/hls/4fk_high/index.m3u8
+
+#EXTINF:-1,4Fun TV
+https://stream.4fun.tv:8888/hls/4f_high/index.m3u8
+
+#EXTINF:-1,BTB 3
+https://emisja3.btb.j00r.us/iptv/session/3/hls.m3u8
+
+#EXTINF:-1,Disney Channel
+https://streamer.filmowo.xyz/memfs/24012cc7-5a6e-492f-9083-579349d56f37.m3u8
+
+#EXTINF:-1,Polsat
+https://srv7.flussonic111.com/PL_POLSAT_HD/index.m3u8
+
+#EXTINF:-1,TVP1
+https://ec06-krk3.cache.orange.pl/dai4/org1/vb/104/tvp1hd/index.m3u8
+`;
+
+// ====== PARSER M3U ======
+const channels = [];
+const lines = rawM3U.split("\n");
+
+for (let i = 0; i < lines.length; i++) {
+  if (lines[i].startsWith("#EXTINF")) {
+    const name = lines[i].split(",")[1];
+    const url = lines[i + 1];
+    if (url && url.startsWith("http")) {
+      channels.push({ name, url });
+    }
+  }
+}
+
+let selected = 0;
+
+const listEl = document.getElementById("list");
+const video = document.getElementById("video");
+
+// ====== RENDER (ULTRA LEKKI) ======
+function render() {
+  listEl.innerHTML = "";
+  for (let i = 0; i < channels.length; i++) {
+    const div = document.createElement("div");
+    div.className = "item" + (i === selected ? " active" : "");
+    div.textContent = channels[i].name;
+    listEl.appendChild(div);
+  }
+}
+
+// ====== PLAY ======
+function play() {
+  video.src = channels[selected].url;
+}
+
+// ====== CEC / PILOT ======
+document.addEventListener("keydown", (e) => {
+  switch(e.key) {
+    case "ArrowDown":
+      selected = (selected + 1) % channels.length;
+      render();
+      break;
+
+    case "ArrowUp":
+      selected = (selected - 1 + channels.length) % channels.length;
+      render();
+      break;
+
+    case "Enter":
+      play();
+      break;
+  }
+});
+
+render();
+</script>
+
+</body>
+</html>
