@@ -4,7 +4,7 @@ const projects = [
         title: "Dajnożarł VS Evil Scary",
         description: "Projekt wyeksportowany z TurboWarp.",
         file: "projects/dino.html",
-        thumbnail: "https://via.placeholder.com/300x200?text=Dajnożarł VS Evil Scary"
+        thumbnail: "img/dino.png"
     }
 ,
     {
@@ -33,4 +33,4 @@ const projects = [
 
 ];
 
-// Skrypt automatycznie zaktualizował ten plik: nie, 14 cze 2026, 21:53:35 CEST
+// Skrypt automatycznie zaktualizował ten plik: nie, 14 cze 2026, 22:01:53 CEST

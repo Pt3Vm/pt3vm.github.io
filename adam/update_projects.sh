@@ -1,13 +1,12 @@
 #!/bin/bash
 
-# Folder z projektami i plik wyjściowy
+# Konfiguracja
 PROJECTS_DIR="projects"
+IMG_DIR="img"
 OUTPUT_FILE="projects.js"
 
-# Wejdź do folderu myscratch, jeśli skrypt jest uruchamiany z poziomu wyżej
-if [ -d "myscratch" ]; then
-    cd myscratch
-fi
+# Wejdź do folderu skryptu
+cd "$(dirname "$0")"
 
 echo "Skanowanie projektów w folderze $PROJECTS_DIR..."
 
@@ -30,6 +29,14 @@ for file in "$PROJECTS_DIR"/*.html; do
             title="$id"
         fi
 
+        # Sprawdzanie czy istnieje miniatura w folderze img
+        if [ -f "$IMG_DIR/$id.png" ]; then
+            thumbnail="$IMG_DIR/$id.png"
+        else
+            # Fallback do placeholdera, jeśli nie ma obrazka
+            thumbnail="https://via.placeholder.com/300x200?text=$title"
+        fi
+
         # Dodaj przecinek, jeśli to nie jest pierwszy element
         if [ "$FIRST" = true ]; then
             FIRST=false
@@ -44,7 +51,7 @@ for file in "$PROJECTS_DIR"/*.html; do
         title: "$title",
         description: "Projekt wyeksportowany z TurboWarp.",
         file: "projects/$filename",
-        thumbnail: "https://via.placeholder.com/300x200?text=$title"
+        thumbnail: "$thumbnail"
     }
 EOF
     fi
