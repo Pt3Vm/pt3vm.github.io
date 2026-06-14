@@ -8,6 +8,14 @@ const projects = [
     }
 ,
     {
+        id: "fruitninja",
+        title: "Fruit ninja - Camera Edition! V1",
+        description: "Projekt wyeksportowany z TurboWarp.",
+        file: "projects/fruitninja.html",
+        thumbnail: "https://via.placeholder.com/300x200?text=Fruit ninja - Camera Edition! V1"
+    }
+,
+    {
         id: "projekt",
         title: "Projekt",
         description: "Projekt wyeksportowany z TurboWarp.",
@@ -33,4 +41,4 @@ const projects = [
 
 ];
 
-// Skrypt automatycznie zaktualizował ten plik: nie, 14 cze 2026, 22:01:53 CEST
+// Skrypt automatycznie zaktualizował ten plik: nie, 14 cze 2026, 22:08:01 CEST
