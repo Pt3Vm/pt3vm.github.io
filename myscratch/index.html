@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moja Galeria TurboWarp</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Moje Projekty TurboWarp</h1>
+            <p>Kolekcja moich gier i aplikacji stworzonych w Scratch.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div id="gallery" class="gallery">
+            <!-- Projekty zostaną tu wstawione przez script.js -->
+        </div>
+    </main>
+
+    <!-- Modal do gry -->
+    <div id="project-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <div id="viewer-container">
+                <!-- Iframe zostanie tu wstawiony -->
+            </div>
+            <div class="modal-info">
+                <h2 id="modal-title"></h2>
+                <p id="modal-description"></p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Moja Galeria. Zbudowano przy użyciu TurboWarp Packager.</p>
+        </div>
+    </footer>
+
+    <script src="projects.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
